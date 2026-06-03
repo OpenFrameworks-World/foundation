@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Framework Composition Conformance Schema",
+  "type": "object",
+  "description": "Executable validation schema for verifying that a framework composition preserves capability and remains composable.",
+
+  "required": [
+    "composition_id",
+    "frameworks",
+    "composition_contract",
+    "capability_checks",
+    "interface_checks",
+    "governance_checks",
+    "trust_checks",
+    "publication"
+  ],
+
+  "properties": {
+
+    "composition_id": {
+      "type": "string",
+      "description": "Unique identifier for the composition"
+    },
+
+    "frameworks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "capability", "version"],
+        "properties": {
+          "id": { "type": "string" },
+          "version": { "type": "string" },
+          "capability": { "type": "string" },
+          "dependencies": { "type": "array", "items": { "type": "string" } },
+          "interfaces": { "type": "array", "items": { "type": "string" } },
+          "governance_owner": { "type": "string" },
+          "trust_level": { "type": "number", "minimum": 0, "maximum": 1 }
+        }
+      }
+    },
+
+    "composition_contract": {
+      "type": "object",
+      "required": ["purpose", "preserved_capabilities", "constraints"],
+      "properties": {
+        "purpose": { "type": "string" },
+        "preserved_capabilities": { "type": "array", "items": { "type": "string" } },
+        "added_capabilities": { "type": "array", "items": { "type": "string" } },
+        "constraints": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+
+    "capability_checks": {
+      "type": "object",
+      "required": ["preservation_valid"],
+      "properties": {
+        "preservation_valid": { "type": "boolean" },
+        "capability_loss_detected": { "type": "boolean" },
+        "emergent_capability_score": { "type": "number" }
+      }
+    },
+
+    "interface_checks": {
+      "type": "object",
+      "properties": {
+        "interfaces_defined": { "type": "boolean" },
+        "compatibility_valid": { "type": "boolean" },
+        "breaking_changes_detected": { "type": "boolean" }
+      }
+    },
+
+    "governance_checks": {
+      "type": "object",
+      "properties": {
+        "ownership_defined": { "type": "boolean" },
+        "approval_present": { "type": "boolean" },
+        "lifecycle_state_valid": { "type": "boolean" }
+      }
+    },
+
+    "trust_checks": {
+      "type": "object",
+      "properties": {
+        "trust_computed": { "type": "boolean" },
+        "inheritance_valid": { "type": "boolean" },
+        "confidence_score": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    },
+
+    "publication": {
+      "type": "object",
+      "properties": {
+        "publishable": { "type": "boolean" },
+        "blocking_issues": { "type": "array", "items": { "type": "string" } },
+        "release_version": { "type": "string" }
+      }
+    }
+  }
+}
